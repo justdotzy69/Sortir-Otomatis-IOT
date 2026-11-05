@@ -1,1 +1,3 @@
-"# Sortir-Otomatis-IOT" 
+## Sortir-Otomatis-IOT
+
+Identitas Kelompok 
