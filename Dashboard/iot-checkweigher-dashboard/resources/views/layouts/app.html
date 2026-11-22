@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}} | {{.AppName}}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN untuk grafik real-time -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/public/css/app.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen font-sans">
+    {{template "partials/navbar" .}}
+
+    <main class="container mx-auto px-4 py-6 flex-grow max-w-7xl">
+        {{template "partials/flash" .}}
+        {{embed}}
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
+        &copy; 2026 {{.AppName}} - Go Fiber MVC 
+    </footer>
+
+    {{template "partials/delete-modal" .}}
+
+    <script src="/public/js/app.js"></script>
+</body>
+</html>
+

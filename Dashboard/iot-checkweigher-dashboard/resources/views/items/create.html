@@ -1,0 +1,29 @@
+<div class="max-w-2xl mx-auto space-y-6">
+    <!-- Breadcrumb & Title -->
+    <div>
+        <a href="/items" class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition">
+            &larr; Kembali ke Daftar Barang
+        </a>
+        <h1 class="text-2xl font-black text-slate-800 tracking-tight mt-2">Daftarkan Barang Baru</h1>
+        <p class="text-sm text-slate-500 mt-1">Sistem akan secara otomatis memberikan nomor kode barang urut (misal: BRG-01, BRG-02).</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+        <form method="POST" action="/items">
+            <input type="hidden" name="_csrf" value="{{.CsrfToken}}">
+
+            {{template "items/_form" .}}
+
+            <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-slate-100">
+                <a href="/items" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">
+                    Batal
+                </a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 transition shadow-sm">
+                    Simpan Barang
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

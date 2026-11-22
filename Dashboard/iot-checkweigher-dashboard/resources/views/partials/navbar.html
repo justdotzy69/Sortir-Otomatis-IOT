@@ -1,0 +1,22 @@
+<nav class="bg-slate-900 text-white shadow-md">
+    <div class="container mx-auto px-4 max-w-7xl flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2 font-bold text-lg tracking-wide hover:text-blue-400 transition">
+            <span>{{.AppName}}</span>
+        </a>
+        <div class="flex items-center gap-1 sm:gap-2">
+            <a href="/" class="px-3 py-2 rounded-lg text-sm font-medium transition {{if eq .CurrentPath "/"}}bg-blue-600 text-white{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                Dashboard
+            </a>
+            <a href="/items" class="px-3 py-2 rounded-lg text-sm font-medium transition {{if hasPrefix .CurrentPath "/items"}}bg-blue-600 text-white{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                Daftar Barang
+            </a>
+            <a href="/history" class="px-3 py-2 rounded-lg text-sm font-medium transition {{if hasPrefix .CurrentPath "/history"}}bg-blue-600 text-white{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                Riwayat
+            </a>
+            <a href="/settings" class="px-3 py-2 rounded-lg text-sm font-medium transition {{if hasPrefix .CurrentPath "/settings"}}bg-blue-600 text-white{{else}}text-slate-300 hover:bg-slate-800 hover:text-white{{end}}">
+                Pengaturan
+            </a>
+        </div>
+    </div>
+</nav>
+

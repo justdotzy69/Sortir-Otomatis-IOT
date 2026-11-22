@@ -1,0 +1,29 @@
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 text-xs text-slate-500">
+    <div>
+        Menampilkan <strong>{{.From}}</strong>&ndash;<strong>{{.To}}</strong> dari <strong>{{.Total}}</strong> data
+    </div>
+    {{if gt .LastPage 1}}
+    <div class="inline-flex rounded-xl shadow-sm border border-slate-200 overflow-hidden bg-white">
+        {{if .HasPrev}}
+        <a href="{{.Link .PrevPage}}" class="px-3 py-2 text-slate-700 hover:bg-slate-50 border-r border-slate-200 font-semibold transition">&laquo;</a>
+        {{else}}
+        <span class="px-3 py-2 text-slate-300 border-r border-slate-200 cursor-not-allowed">&laquo;</span>
+        {{end}}
+
+        {{range .Pages}}
+        {{if eq . $.Page}}
+        <span class="px-3 py-2 bg-blue-600 text-white font-bold">{{.}}</span>
+        {{else}}
+        <a href="{{$.Link .}}" class="px-3 py-2 text-slate-700 hover:bg-slate-50 border-r border-slate-200 transition">{{.}}</a>
+        {{end}}
+        {{end}}
+
+        {{if .HasNext}}
+        <a href="{{.Link .NextPage}}" class="px-3 py-2 text-slate-700 hover:bg-slate-50 font-semibold transition">&raquo;</a>
+        {{else}}
+        <span class="px-3 py-2 text-slate-300 cursor-not-allowed">&raquo;</span>
+        {{end}}
+    </div>
+    {{end}}
+</div>
+

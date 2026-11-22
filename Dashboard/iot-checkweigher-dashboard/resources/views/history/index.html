@@ -1,0 +1,122 @@
+<div class="space-y-6">
+    <!-- Header & Export Action -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Riwayat Penimbangan</h1>
+            <p class="text-sm text-slate-500 mt-1">Daftar log penimbangan barang yang tercatat otomatis dari loadcell dan sensor.</p>
+        </div>
+        <a href="/history/export?category={{.Category}}&start_date={{.StartDate}}&end_date={{.EndDate}}" 
+            class="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-sm transition">
+            Unduh CSV
+        </a>
+    </div>
+
+    <!-- Filter Form Card -->
+    <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+        <form method="GET" action="/history" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Kategori</label>
+                <select name="category" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition bg-white">
+                    <option value="">Semua Kategori</option>
+                    <option value="RINGAN" {{if eq .Category "RINGAN"}}selected{{end}}>RINGAN (&lt; 300g)</option>
+                    <option value="BERAT" {{if eq .Category "BERAT"}}selected{{end}}>BERAT (300g - 1000g)</option>
+                    <option value="ERROR" {{if eq .Category "ERROR"}}selected{{end}}>ERROR (&gt; 1000g)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Tanggal Mulai</label>
+                <input type="date" name="start_date" value="{{.StartDate}}"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Tanggal Selesai</label>
+                <input type="date" name="end_date" value="{{.EndDate}}"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+            </div>
+            <div class="flex items-end gap-2">
+                <button type="submit" class="flex-1 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-sm font-semibold transition">
+                    Terapkan Filter
+                </button>
+                {{if or .Category .StartDate .EndDate}}
+                    <a href="/history" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm font-semibold transition text-center">
+                        Reset
+                    </a>
+                {{end}}
+            </div>
+        </form>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-600">
+                <thead class="bg-slate-50 border-b border-slate-100 text-xs uppercase font-bold text-slate-400">
+                    <tr>
+                        <th class="px-6 py-4">Waktu</th>
+                        <th class="px-6 py-4">Barang</th>
+                        <th class="px-6 py-4">RFID UID</th>
+                        <th class="px-6 py-4">Berat</th>
+                        <th class="px-6 py-4">Kategori</th>
+                        <th class="px-6 py-4">Kecepatan</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {{range .Weighings}}
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500 whitespace-nowrap">
+                            {{tanggal .MeasuredAt}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{if .Item}}
+                                <div class="font-bold text-slate-800">{{.Item.Name}}</div>
+                                <div class="text-xs font-mono text-blue-600">{{.Item.ItemCode}}</div>
+                            {{else}}
+                                <span class="text-xs text-slate-400 italic">Barang Tidak Dikenal</span>
+                            {{end}}
+                        </td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-600">
+                            {{.RfidUID}}
+                        </td>
+                        <td class="px-6 py-4 font-mono font-bold text-slate-900">
+                            {{formatWeight .Weight}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{if eq .Category "RINGAN"}}
+                                <span class="inline-block px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800">
+                                    RINGAN
+                                </span>
+                            {{else if eq .Category "BERAT"}}
+                                <span class="inline-block px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
+                                    BERAT
+                                </span>
+                            {{else}}
+                                <span class="inline-block px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 text-rose-800">
+                                    ERROR
+                                </span>
+                            {{end}}
+                        </td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-600">
+                            {{printf "%.1f" .ConveyorSpeed}} RPM
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                            <p class="font-semibold text-slate-600 text-base">Tidak ada catatan penimbangan.</p>
+                            <p class="text-xs text-slate-400 mt-1">Data penimbangan dari alat ESP32 akan muncul di sini secara otomatis.</p>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {{if gt .Pagination.Total 0}}
+        <div class="p-4 border-t border-slate-100">
+            {{template "partials/pagination" .Pagination}}
+        </div>
+        {{end}}
+    </div>
+</div>
+

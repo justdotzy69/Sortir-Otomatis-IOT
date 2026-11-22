@@ -1,0 +1,26 @@
+{{if .FlashSuccess}}
+<div class="mb-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-2">
+        <span class="font-bold">[SUCCESS]</span>
+        <span>{{.FlashSuccess}}</span>
+    </div>
+    <button type="button" onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 font-bold">&times;</button>
+</div>
+{{end}}
+
+{{if .FlashError}}
+<div class="mb-4 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-2">
+        <span class="font-bold">[ERROR]</span>
+        <span>{{.FlashError}}</span>
+    </div>
+    <button type="button" onclick="this.parentElement.remove()" class="text-rose-600 hover:text-rose-900 font-bold">&times;</button>
+</div>
+{{end}}
+
+{{with index .Errors "_form"}}
+<div class="mb-4 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm font-medium">
+    {{.}}
+</div>
+{{end}}
+
